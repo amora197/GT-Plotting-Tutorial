@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-GT-Plotting-Tutorial - Documentation!
-=====================================
+GT-Plotting-Tutorial Documentation
+==================================
 
 .. toctree::
    :maxdepth: 2
@@ -177,11 +177,29 @@ Then, the important features are extracted from the **vcf** file for the genotyp
 
    > vcf_testdata$vcfdata
 
-A data frame is created, which has the chromosome names and the size of each chromosome,
+Running the above will output the CHROM, POS, REF, ALT, QUAL, INDVL1, and INDVL2. A data frame is created by running,
 
 ::
    
    > vcf_testdata$chromelen
+
+The output looks like below with chromosome number and size, 
+
+::
+
+       chromosome   size
+   1  NC_018051.1     16
+   2  NC_040279.1  38450
+   3  NC_040280.1  34390
+   4  NC_040281.1  54830
+   5  NC_040282.1 193987
+   6  NC_040283.1 125079
+   7  NC_040284.1  36664
+   8  NC_040285.1 104691
+   9  NC_040286.1  58685
+   10 NC_040287.1  83639
+   11 NC_040288.1 276550
+   12 NC_040289.1  52588
 
 Step 7 – GTPlotting_Chromosome Function
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -192,6 +210,13 @@ This function plots the genotype of each chromosome. It takes three inputs the *
 
    > GTPlotting_Chromosome(vcf_testdata$vcfdata,vcf_testdata$chromelen,'Grinkan_CTRL')
 
+.. figure:: ../images/function_02_output.jpeg
+   :width: 600px
+   :align: center
+   :figclass: align-center
+
+   **Figure 1.** "GTPlotting_Chromosome" output. (click to expand)
+
 Step 8 – GTPlotting_Chromosome_Combined Function
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -201,12 +226,9 @@ This function plots the genotype of all the chromosomes. It takes two inputs the
 
    > GTPlotting_Chromosome_Combined(vcf_testdata$vcfdata,vcf_testdata$chromelen)
 
+.. figure:: ../images/function_03_output.jpeg
+   :width: 600px
+   :align: center
+   :figclass: align-center
 
-
-
-
-
-
-
-
-
+   **Figure 2.** "GTPlotting_Chromosome_Combined" output. (click to expand)
