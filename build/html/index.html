@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to GT-Plotting-Tutorial’s documentation! &mdash; GT-Plotting-Tutorial 1.0 documentation</title>
+  <title>GT-Plotting-Tutorial - Documentation! &mdash; GT-Plotting-Tutorial 1.0 documentation</title>
   
 
   
@@ -80,8 +80,18 @@
             
                 <!-- Local TOC -->
                 <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">Welcome to GT-Plotting-Tutorial’s documentation!</a></li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+<li><a class="reference internal" href="#">GT-Plotting-Tutorial - Documentation!</a><ul>
+<li><a class="reference internal" href="#background">Background</a></li>
+<li><a class="reference internal" href="#step-1-installing-conda-and-setting-up-channels">Step 1 – Installing conda and Setting Up Channels</a></li>
+<li><a class="reference internal" href="#step-2-creating-a-conda-environment">Step 2 – Creating a conda environment</a></li>
+<li><a class="reference internal" href="#step-3-installing-r-and-rstudio">Step 3 – Installing R and RStudio</a></li>
+<li><a class="reference internal" href="#step-4-installing-and-loading-the-necessary-r-packages">Step 4 – Installing and Loading the Necessary R Packages</a></li>
+<li><a class="reference internal" href="#step-5-pointing-towards-the-vcf-file">Step 5 – Pointing towards the vcf File</a></li>
+<li><a class="reference internal" href="#step-6-vcftotable-function">Step 6 – VcfToTable Function</a></li>
+<li><a class="reference internal" href="#step-7-gtplotting-chromosome-function">Step 7 – GTPlotting_Chromosome Function</a></li>
+<li><a class="reference internal" href="#step-8-gtplotting-chromosome-combined-function">Step 8 – GTPlotting_Chromosome_Combined Function</a></li>
+</ul>
+</li>
 </ul>
 </div>
             
@@ -112,7 +122,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="#">Docs</a> &raquo;</li>
       
-    <li>Welcome to GT-Plotting-Tutorial’s documentation!</li>
+    <li>GT-Plotting-Tutorial - Documentation!</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -126,18 +136,150 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="welcome-to-gt-plotting-tutorial-s-documentation">
-<h1>Welcome to GT-Plotting-Tutorial’s documentation!</h1>
+  <div class="section" id="gt-plotting-tutorial-documentation">
+<h1>GT-Plotting-Tutorial - Documentation!</h1>
 <div class="toctree-wrapper compound">
 </div>
+<div class="section" id="background">
+<h2>Background</h2>
+<p>This tutorial plots the genotypic similarities and differences between individuals aligned with to reference genome extracted from a <strong>vcf</strong> file. A <code class="docutils literal notranslate"><span class="pre">vcf.gz</span></code> file is used as input, and it outputs <code class="docutils literal notranslate"><span class="pre">.png</span></code> files, depicting chromosome number, chromosome position, and genotype.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is run using Ubuntu 18.04 Bionic Beaver with R version 3.6.0. For different Ubuntu distributions, download and install the appropriate software/packages.</p>
+<p>Code ran on Linux terminal is preceded by <code class="docutils literal notranslate"><span class="pre">$</span></code>, while code ran on RStudio is preceded by <code class="docutils literal notranslate"><span class="pre">&gt;.</span></code></p>
 </div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables</h1>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
-</ul>
+</div>
+<div class="section" id="step-1-installing-conda-and-setting-up-channels">
+<h2>Step 1 – Installing conda and Setting Up Channels</h2>
+<p>It is recommended to install miniconda3 and create a conda environment to install all necessary packages and dependencies without affecting the system. Miniconda is a free minimal installer for conda. It is a small, bootstrap version of Anaconda that includes only conda, Python, the packages they depend on, and a small number of other useful packages, including pip, zlib and a few others. Use the conda install command to install 720+ additional conda packages from the Anaconda repository.</p>
+<p>Open a new terminal <strong>(Ctrl + Alt + T)</strong> and make sure that the system is up-to-date,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt-get update
+</pre></div>
+</div>
+<p>Download the latest package from the ‘<a class="reference external" href="https://docs.conda.io/en/latest/miniconda.html">Miniconda Webpage</a> and install it with,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+$ sh Miniconda3-latest-Linux-x86_64.sh
+</pre></div>
+</div>
+<p>It may be possible that Python 2.7 was installed with miniconda3. In order to use a newer version of Python, install the preferred Python version and update conda to resolve any dependency failures,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda install -c anaconda python=3.7
+$ conda update --all
+</pre></div>
+</div>
+<p>Setup the appropriate bioconda channels. Make sure to run the following commands exactly in this order,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda config --add channels defaults
+$ conda config --add channels bioconda
+$ conda config --add channels conda-forge
+</pre></div>
+</div>
+<p>Bioconda is now enabled, so you can install any packages and versions available on the bioconda channel, such as</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda install bwa bowtie bcftools=1.9
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-2-creating-a-conda-environment">
+<h2>Step 2 – Creating a conda environment</h2>
+<p>Create a new conda environment with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda create --name &lt;environment-name&gt;
+</pre></div>
+</div>
+<p>Substitute <code class="docutils literal notranslate"><span class="pre">&lt;environment-name&gt;</span></code> with the preferred name you want. As an example,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda create --name R-Data-Science
+</pre></div>
+</div>
+<p>Once the newly created environment has been installed, activate it with,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda activate R-Data-Science
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-3-installing-r-and-rstudio">
+<h2>Step 3 – Installing R and RStudio</h2>
+<p>In order to install R and RStudio, it is recommended to run the installation with the use of conda. To install R, input the following,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda install rstudio
+</pre></div>
+</div>
+<p>By directly installing RStudio, conda will install all the necessary dependencies, including the appropriate version of R. Once the installation is complete, open RStudio in the terminal,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ rstudio
+</pre></div>
+</div>
+<p>RStudio will open a new window where R scripts can be run.</p>
+</div>
+<div class="section" id="step-4-installing-and-loading-the-necessary-r-packages">
+<h2>Step 4 – Installing and Loading the Necessary R Packages</h2>
+<p>In RStudio, create a new R script and begin developing it by going to <strong>File&gt;New File&gt;R Script</strong>. In order to open the genome <code class="docutils literal notranslate"><span class="pre">vcf.gz</span></code> files, <code class="docutils literal notranslate"><span class="pre">unzip</span></code> and <code class="docutils literal notranslate"><span class="pre">tar</span></code> are required. The system might have multiple directories containing <code class="docutils literal notranslate"><span class="pre">unzip</span></code> and <code class="docutils literal notranslate"><span class="pre">tar</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">getOption</span><span class="p">(</span><span class="s2">&quot;unzip&quot;</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="n">options</span><span class="p">(</span><span class="n">unzip</span> <span class="o">=</span> <span class="s2">&quot;/usr/bin/unzip&quot;</span><span class="p">)</span>
+<span class="o">&gt;</span>
+<span class="o">&gt;</span> <span class="n">Sys</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;TAR&quot;</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="n">Sys</span><span class="o">.</span><span class="n">setenv</span><span class="p">(</span><span class="n">TAR</span> <span class="o">=</span> <span class="s2">&quot;/bin/tar&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>First install and load <code class="docutils literal notranslate"><span class="pre">devtools</span></code>, which will help install the corresponding dependencies and GitHub libraries later on,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&gt; install.packages(“devtools”)
+&gt; library(devtools)
+</pre></div>
+</div>
+<p>Install the necessary dependencies using <a class="reference external" href="https://cran.r-project.org/web/packages/BiocManager/vignettes/BiocManager.html">BiocManager</a>,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">BiocManager</span><span class="p">::</span><span class="n">install</span><span class="p">(</span><span class="n">c</span><span class="p">(</span><span class="s2">&quot;VariantAnnotation&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>If the above did not run, it may be needed to install first <a class="reference external" href="https://cran.r-project.org/web/packages/BiocManager/vignettes/BiocManager.html">BiocManager</a> and then run the above again,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">install</span><span class="o">.</span><span class="n">packages</span><span class="p">(</span><span class="s2">&quot;BiocManager&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Install the libraries <a class="reference external" href="https://github.com/knausb/vcfR">vcfR</a> and <a class="reference external" href="https://github.com/AnzaGhaffar/GT-Plotting">GT-Plotting</a> from their respective GitHub repositories,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">devtools</span><span class="p">::</span><span class="n">install_github</span><span class="p">(</span><span class="s2">&quot;knausb/vcfR&quot;</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="n">devtools</span><span class="p">::</span><span class="n">install_github</span><span class="p">(</span><span class="s2">&quot;AnzaGhaffar/GT-Plotting&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Load the installed dependencies and GitHub libraries,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">library</span><span class="p">(</span><span class="n">tidyr</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="n">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="n">library</span><span class="p">(</span><span class="s2">&quot;VariantAnnotation&quot;</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="n">library</span><span class="p">(</span><span class="s2">&quot;vcfR&quot;</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="n">library</span><span class="p">(</span><span class="s2">&quot;GTPlotting&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-5-pointing-towards-the-vcf-file">
+<h2>Step 5 – Pointing towards the vcf File</h2>
+<p>RStudio will need to know where the <strong>vcf</strong> file is. Specify the path and filename,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">path</span> <span class="o">&lt;-</span> <span class="s2">&quot;/path/to/directory/with/vcf/file/&quot;</span>
+<span class="o">&gt;</span> <span class="n">setwd</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="n">vcffilename</span> <span class="o">&lt;-</span> <span class="s2">&quot;name_of_vcf_file.vcf.gz&quot;</span>
+</pre></div>
+</div>
+<p>The next three steps consist of running functions to plot the genotypes.</p>
+</div>
+<div class="section" id="step-6-vcftotable-function">
+<h2>Step 6 – VcfToTable Function</h2>
+<p><code class="docutils literal notranslate"><span class="pre">VcfToTable</span></code> takes as input a <strong>vcf</strong> file with extension <code class="docutils literal notranslate"><span class="pre">.vcf</span></code> or <code class="docutils literal notranslate"><span class="pre">.vcf.gz</span></code> and creates an object that consists of two data frames,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">vcf_testdata</span><span class="o">&lt;-</span><span class="n">VcfToTable</span><span class="p">(</span><span class="n">vcffilename</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then, the important features are extracted from the <strong>vcf</strong> file for the genotype plotting using the <code class="docutils literal notranslate"><span class="pre">vcfdata</span></code> data frame,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&gt; vcf_testdata$vcfdata
+</pre></div>
+</div>
+<p>A data frame is created, which has the chromosome names and the size of each chromosome,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&gt; vcf_testdata$chromelen
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-7-gtplotting-chromosome-function">
+<h2>Step 7 – GTPlotting_Chromosome Function</h2>
+<p>This function plots the genotype of each chromosome. It takes three inputs the <strong>vcf</strong> data frame generated by the <code class="docutils literal notranslate"><span class="pre">VcfToTable</span></code> function, the chromosome length table generated by the <code class="docutils literal notranslate"><span class="pre">VcfToTable</span></code> function, and the name of the control sample should be same as in the <strong>vcf</strong> file,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&gt; GTPlotting_Chromosome(vcf_testdata$vcfdata,vcf_testdata$chromelen,&#39;Grinkan_CTRL&#39;)
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-8-gtplotting-chromosome-combined-function">
+<h2>Step 8 – GTPlotting_Chromosome_Combined Function</h2>
+<p>This function plots the genotype of all the chromosomes. It takes two inputs the <strong>vcf</strong> data frame generated by the <code class="docutils literal notranslate"><span class="pre">VcfToTable</span></code> function and the chromosome length table generated by the <code class="docutils literal notranslate"><span class="pre">VcfToTable</span></code> function,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&gt; GTPlotting_Chromosome_Combined(vcf_testdata$vcfdata,vcf_testdata$chromelen)
+</pre></div>
+</div>
+</div>
 </div>
 
 
